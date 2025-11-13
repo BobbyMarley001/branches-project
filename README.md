@@ -30,28 +30,28 @@ Retro **green-on-black terminal visualization** demonstrating:
 
 ## ⚙️ Setup  
 
-```bash
-git clone https://github.com/bobbymarley001/branches-project.git
-cd branches-project```
 
-Then open **`index.html`** in your browser 🌍  
+git clone https://github.com/bobbymarley001/branches-project.git
+cd branches-project
+
+Then open `index.html` in your browser 🌍  
 
 ---
 
 ## 🚀 Deployment (GitHub Pages)  
 
-1. Push your project to the **main branch**  
-2. Go to **Settings → Pages**  
-3. Under **Build and Deployment**, select:  
-   - **Source:** Deploy from branch  
-   - **Branch:** `main` → `/ (root)`  
+1. Push your project to the main branch  
+2. Go to Settings → Pages  
+3. Under Build and Deployment, select:  
+   - Source: Deploy from branch  
+   - Branch: `main` → `/ (root)`  
 4. Click **Save** — your site will go live in about a minute  
 
 ---
 
 ## 🏷️ Credits  
 
-- Inspired by **Johnny’s Software Lab**  
+- Inspired by Johnny’s Software Lab  
 - Created and maintained by [@bobbymarley001](https://github.com/bobbymarley001) 💻  
 
 ---
