@@ -1,0 +1,192 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>BRANCHES.EXE - Bala Software Lab</title>
+  <style>
+    @import url('https://fonts.googleapis.com/css2?family=VT323&display=swap');
+
+    * { margin:0; padding:0; box-sizing:border-box; }
+    body {
+      background: #000;
+      color: #0f0;
+      font-family: 'VT323', monospace;
+      font-size: 18px;
+      line-height: 1.5;
+      padding: 2rem;
+      overflow-x: hidden;
+    }
+    .crt {
+      background: 
+        linear-gradient(rgba(0,255,0,0.05) 50%, rgba(0,0,0,0.1) 50%),
+        linear-gradient(90deg, rgba(0,255,0,0.02) 1px, transparent 1px);
+      background-size: 100% 4px, 4px 100%;
+      animation: scan 8s linear infinite;
+      min-height: 100vh;
+      position: relative;
+      overflow-y: auto;
+      padding-bottom: 10rem;
+    }
+    .crt::before {
+      content: '';
+      display: block;
+      position: absolute;
+      top: 0; left: 0; right: 0; bottom: 0;
+      background: radial-gradient(circle at center, transparent 0%, rgba(0,0,0,0.3) 100%);
+      pointer-events: none;
+      z-index: 2;
+    }
+    @keyframes scan {
+      0% { background-position: 0 0, 0 0; }
+      100% { background-position: 0 100%, 0 0; }
+    }
+    .title {
+      font-size: 2.5rem;
+      text-align: center;
+      margin: 2rem 0;
+      text-shadow: 0 0 10px #0f0;
+      animation: flicker 3s infinite alternate;
+    }
+    .subtitle {
+      text-align: center;
+      color: #0a0;
+      margin-bottom: 2rem;
+    }
+    @keyframes flicker {
+      0%, 100% { opacity: 1; }
+      50% { opacity: 0.8; }
+    }
+    @keyframes blink {
+      50% { opacity: 0; }
+    }
+    .section {
+      margin: 2.5rem 0;
+      border-left: 3px solid #0f0;
+      padding-left: 1rem;
+    }
+    .blink {
+      animation: blink 1s steps(1) infinite;
+    }
+    table {
+      width: 100%;
+      border-collapse: collapse;
+      margin: 1rem 0;
+    }
+    td, th {
+      border: 1px solid #0a0;
+      padding: 0.4rem;
+      text-align: left;
+    }
+    .highlight {
+      background: #002200;
+      padding: 0.1rem 0.3rem;
+      border-radius: 2px;
+    }
+    .prompt {
+      color: #0f0;
+    }
+    .prompt::before {
+      content: "> ";
+      color: #0f0;
+    }
+    .footer {
+      text-align: center;
+      margin-top: 4rem;
+      color: #060;
+      font-size: 0.9rem;
+    }
+    a { color: #0f0; text-decoration: none; }
+    a:hover { text-decoration: underline; }
+  </style>
+</head>
+<body>
+<div class="crt">
+<pre>
+
+<span class="title">BRANCHES.EXE</span>
+<span class="subtitle">How Branches Influence Performance - Johnny’s Software Lab</span>
+
+<span class="blink">_</span>
+
+<span class="section">INSIDE THE CPU</span>
+Modern CPUs use:
+- <span class="highlight">Pipeline</span>: executes multiple stages at once  
+- <span class="highlight">Out-of-Order Execution</span>: runs independent instructions early  
+- <span class="highlight">Speculative Execution</span>: guesses next steps  
+- <span class="highlight">Branch Prediction</span>: remembers past results  
+
+A branch is cheap if predicted correctly, expensive if mispredicted.
+
+<span class="section">BRANCH COST (x86-64)</span>
+<table>
+<tr><th>Condition</th><th>Runtime</th><th>IPC</th><th>Miss%</th></tr>
+<tr><td>Always True</td><td>5.53s</td><td>1.36</td><td>0%</td></tr>
+<tr><td>Unpredictable</td><td class="highlight">13.14s</td><td>0.50</td><td>33%</td></tr>
+<tr><td>Always False</td><td>5.48s</td><td>1.27</td><td>0%</td></tr>
+</table>
+→ Unpredictable branches are <span class="highlight">3x slower</span>.
+
+<span class="section">HOW TO REDUCE BRANCH PENALTY</span>
+<span class="prompt">1. Put cheap conditions first</span>
+<span class="prompt">2. Prioritize the hot path</span>
+<span class="prompt">3. Use lookup tables instead of switch</span>
+<span class="prompt">4. Move common cases out</span>
+<span class="prompt">5. Merge with &amp; instead of &&</span>
+<span class="prompt">6. Use likely/unlikely hints</span>
+<span class="prompt">7. Replace with arithmetic</span>
+<span class="prompt">8. Use CMOV (conditional move)</span>
+<span class="prompt">9. Split data by branch type</span>
+<span class="prompt">10. Use template parameters</span>
+<span class="prompt">11. Duplicate critical code paths</span>
+<span class="prompt">12. Use bool arrays for counters</span>
+
+<span class="section">EXPERIMENT: COUNTING</span>
+<table>
+<tr><th>Version</th><th>Runtime</th><th>IPC</th></tr>
+<tr><td>Branch</td><td>14.2s</td><td>0.51</td></tr>
+<tr><td>LUT Array</td><td class="highlight">7.4s</td><td>1.38</td></tr>
+<tr><td>Arithmetic</td><td>7.6s</td><td>1.32</td></tr>
+<tr><td>CMOV</td><td>9.8s</td><td>1.04</td></tr>
+</table>
+→ <span class="highlight">Branchless ≈ 2× faster</span> in predictable memory.
+
+<span class="section">BINARY SEARCH BEHAVIOR</span>
+When memory is slow:
+- Branch speculation hides latency.
+- CMOV causes stalls due to dependency.
+
+When data fits cache:
+- CMOV and arithmetic outperform branches.
+
+<span class="section">BRANCH PREDICTION INSIGHTS</span>
+- x86 CPUs gain the most from correct prediction.
+- ARM/MIPS: weaker penalty; branchless helps less.
+- Likely/unlikely annotations rarely improve speed on modern chips.
+
+<span class="section">LESSONS & CHECKLIST</span>
+[ ] Optimize cache before branches  
+[ ] Use branchless logic in hot loops  
+[ ] Measure using <span class="highlight">perf stat -e branch-misses</span>  
+[ ] Keep readability — compilers optimize well  
+
+<span class="section">THE FUTURE</span>
+Even low-end CPUs now predict branches.  
+As pipelines deepen and OOO expands, misprediction costs will grow.  
+Branchless coding will become increasingly important for tight loops and high-performance workloads.
+
+<span class="section">REFERENCE LINKS</span>
+<a href="https://johnnysswlab.com">Johnny’s Software Lab</a>  
+<a href="https://bh-cookbook.github.io/mips-asm/jumps-and-branches-part-6.html">MIPS Branches Reference</a>  
+<a href="https://agner.org/optimize/">Agner Fog’s Optimization Guide</a>
+
+<span class="footer">
+© 2025 Bala Esakki 
+Running on Real Hardware  
+<span class="blink">_</span>
+</span>
+
+</pre>
+</div>
+</body>
+</html>
